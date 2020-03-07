@@ -391,5 +391,29 @@ function showTerminal(server) {
         help: 'Gibt die Hilfe zurück'
     });
 
+    $ptty.register('command', {
+        name: 'rm',
+        method: function (cmd) {
+            var last = $ptty.get_command_option('last');
+            var args = last.split(' ');
+            if (args.length !== 2) {
+                return {out: "Benutzung: rm <Datei name>"};
+            }
+
+            for (var i = 0; i < servers[server].getRawFiles().length; i++) {
+                if (servers[server].getRawFiles()[i].getName().toUpperCase() === args[1].toUpperCase()) {
+                    if (servers[server].getRawFiles()[i].deletable) {
+                        servers[server].files.splice(i, 1);
+                        return {out: servers[server].getRawFiles()[i].getName() + ": Datei gelöscht!"};
+                    }
+                    return {out: servers[server].getRawFiles()[i].getName() + ": Diese Datei kann nicht gelöscht werden!"};
+                }
+            }
+            return {out: "Datei nicht gefunden!"};
+
+        },
+        help: 'Gibt die Hilfe zurück'
+    });
+
 
 }
