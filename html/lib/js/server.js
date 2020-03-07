@@ -147,12 +147,12 @@ class Server {
 
 var servers = [];
 
+function addServer() {
+    addServerWithType(Math.floor(Math.random() * names.length));
+}
 
-function addServer(type) {
-    if (type == null)
-        servers[servers.length] = new Server(servers.length, names[Math.floor(Math.random() * names.length)]);
-    else
-        servers[servers.length] = new Server(servers.length, names[type]);
+function addServerWithType(type) {
+    servers[servers.length] = new Server(servers.length, names[type]);
     var row = document.getElementById("dashboard-servers").insertRow(servers.length);
     row.classList.add("single-server");
     var cell = row.insertCell(0);
@@ -215,7 +215,7 @@ addServer();
 function buyServer() {
     if (removeMoney(100)) {
         $.growl.notice({message: "Ein Server wurde gekauft"});
-        addServer();
+        addServerWithType(document.getElementById("buy_type").value);
         //buy
     } else {
         //no money
