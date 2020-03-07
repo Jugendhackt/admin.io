@@ -205,11 +205,21 @@ class Server {
     }
 
     setInfectionLevel(lvl) {
+        console.log("InfestionLevel changed:" + this.getID() + " => " + lvl);
         if (lvl === 5) {
             this.setStatus(ServerStatus.INFESTED);
-            $.growl.warning({message: "Einer deiner Server ist nun infiziert!"});
+            $.growl.warning({message: "Einer deiner Server ist zu 100% infiziert!"});
         } else
             this.setStatus(ServerStatus.STARTED);
+
+        if (lvl !== 0)
+            this.files.push(viruses[Math.round(Math.random() * viruses.length)]);
+        else {
+            for (var i = 0; i < this.files.length; i++) {
+                if (this.files[i].isVirus())
+                    this.files.spice(i, 1);
+            }
+        }
         this.infected = lvl;
 
     }
@@ -452,8 +462,20 @@ setTimeout(
         console.log("Hacking...");
         setInterval(function () {
             for (var i = 0; i < servers.length; i++) {
-                if (Math.random() < 0.4) { //40%
-                    server[i].infest();
+                if (Math.random() < 0.5 && servers[i].infested < 3) { //lvl unter 3 mit 10% => 0
+                    servers[i].setInfectionLevel(0);
+                } else if (Math.random() < 0.3 && servers[i].infested < 3) {
+                    servers[i].setInfectionLevel(1);
+                } else if (Math.random() < 0.3 && servers[i].infested < 3) {
+                    servers[i].setInfectionLevel(2);
+                } else if (Math.random() < 0.4 && servers[i].infested > 3 && servers[i].infested < 5) {
+                    servers[i].setInfectionLevel(2);
+                } else if (Math.random() < 0.4 && servers[i].infested > 3 && server[i].infested < 5) {
+                    servers[i].setInfectionLevel(3);
+                } else if (Math.random() < 0.4 && servers[i].infested > 3 && servers[i].infested < 5) {
+                    servers[i].setInfectionLevel(4);
+                } else if (Math.random() < 0.4 && servers[i].infested > 3 && servers[i].infested < 5) {
+                    servers[i].setInfectionLevel(5);
                 }
             }
         }, 10000);
