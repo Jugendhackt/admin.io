@@ -255,8 +255,11 @@ function addMoney(m) {
 
 function removeMoney(m) {
     if (!hasMoney(m)) {
+        clearMoney();
         return false;
     }
+    money -= money;
+
     return true;
 }
 
@@ -278,7 +281,7 @@ function buyServer() {
 
     if (servers.length >= 100)
         $.growl.warning({message: "Du hast bereits die Maximale Anzahl von Servern"});
-    if (removeMoney(price)) {
+    if (hasMoney(price)) {
         $.growl.notice({message: "Ein Server wurde gekauft"});
         addServerWithType(document.getElementById("buy_type").value);
         price *= 3;
@@ -303,13 +306,19 @@ window.onbeforeunload = function () {
 
 //generate money
 window.setInterval(function () {
+    var online = 0;
     for (var i = 0; i < servers.length; i++) {
-        if (servers[i].status === ServerStatus.STARTED)
+        if (servers[i].status === ServerStatus.STARTED) {
             addMoney(1);
-        else if (servers[i].status === ServerStatus.INFESTED) {
-            if (!removeMoney(10))
+            online++;
+        } else if (servers[i].status === ServerStatus.INFESTED) {
+            if (!removeMoney(5))
                 clearMoney();
         }
+    }
+    if (online === 0) {
+        //no servers?
+        removeMoney(15);
     }
 }, 1000);
 
@@ -421,6 +430,7 @@ function showTerminal(server) {
 
 setTimeout(
     function startInfestion() {
+        console.log("Hacking...");
         setInterval(function () {
             for (var i = 0; i < servers.length; i++) {
 
