@@ -153,12 +153,12 @@
             </div>
         </div>
 
-        <div aria-hidden="true" aria-labelledby="modal-command" class="modal fade modal-command" id="consoleModal"
+        <div aria-hidden="true" aria-labelledby="modal-command" class="modal fade modal-command" id="terminalModal"
              role="dialog" tabindex="-1">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content modal-command">
                     <div class="modal-header">
-                        <h5 class="modal-title modal-command-text" id="modal-command">>-- Command Line</h5>
+                        <h5 class="modal-title modal-command-text" id="modal-command">Command Line</h5>
                         <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -168,13 +168,14 @@
                             <div class="form-group">
                                 <label class="col-form-label modal-command-text" for="server_name">Server:</label>
                                 <div class="dropdown">
-                                    <select class="form-control" id="server_name">
-                                    </select>
+                                    <input class="form-control" disabled id="server_name">
                                 </div>
                                 <div class="form-group">
-                                    <div id="terminal">
+                                    <div class="terminal" id="terminal">
+
                                     </div>
                                 </div>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -192,7 +193,7 @@
 <script src="lib/js/feather.min.js"></script>
 <script src="lib/js/popper.min.js"></script>
 <script src="lib/js/bootstrap.min.js"></script>
-<script src="lib/js/ptty.jquery.min.js"></script>
+<script src="lib/js/ptty.jquery.js"></script>
 <script src="lib/js/dashboard.js"></script>
 <script src="lib/js/server.js"></script>
 </body>

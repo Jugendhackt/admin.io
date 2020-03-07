@@ -9,12 +9,53 @@ const ServerStatus = {
     INFESTED: 5
 };
 
+class File {
+    constructor(name, virus, deletable) {
+        this.name = name;
+        this.virus = virus;
+        this.deletable = deletable;
+    }
+
+    isDeleteable() {
+        return this.deleteable;
+    }
+
+    isVirus() {
+        return this.virus;
+    }
+
+    getName() {
+        return this.name;
+    }
+}
+
+var default_files = [];
+default_files[0] = new File("system", false, false);
+default_files[1] = new File("paint.exe", false, true);
+
 class Server {
     constructor(id, name) {
         this.infected = 0;
         this.id = id;
         this.status = ServerStatus.STOPPED;
         this.name = name;
+        this.files = default_files;
+    }
+
+    getID() {
+        return this.id;
+    }
+
+    getFiles() {
+        var ret = "";
+        this.files.forEach(function (file) {
+            ret += file.getName() + ",";
+        });
+        return ret;
+    }
+
+    getRawFiles() {
+        return this.files;
     }
 
     getStatusString() {
@@ -76,6 +117,10 @@ class Server {
             $(server.html).children(".server-actions").children(".server-actions-shutdown").prop('disabled', false);
             $(server.html).children(".server-actions").children(".server-actions-terminal").prop('disabled', false);
             server.setStatus(ServerStatus.STARTED);
+            if (server.infected === 5) {
+                server.setStatus(ServerStatus.INFESTED);
+                $.growl.warning({message: "Einer deiner Server ist immer noch infiziert!"});
+            }
         }, 5000);
     }
 
@@ -176,7 +221,7 @@ function addServerWithType(type) {
     cell.innerText = servers[servers.length - 1].getPing();
     cell.classList.add("server-ping");
     cell = row.insertCell(4);
-    cell.innerHTML = '<td class="server-actions"><button disabled class="server-button btn-danger btn server-actions-shutdown" onclick="servers[' + (servers.length - 1) + '].shutdown();">Herunterfahren</button><button class="server-button btn-success btn server-actions-start" onclick="servers[' + (servers.length - 1) + '].start();">Starten</button><button class="server-button disabled btn-primary btn server-actions-terminal">Terminal</button></td>';
+    cell.innerHTML = '<td class="server-actions"><button disabled class="server-button btn-danger btn server-actions-shutdown" onclick="servers[' + (servers.length - 1) + '].shutdown();">Herunterfahren</button><button class="server-button btn-success btn server-actions-start" onclick="servers[' + (servers.length - 1) + '].start();">Starten</button><button disabled onclick="showTerminal(' + (servers.length - 1) + ');" class="server-button btn-primary btn server-actions-terminal">Terminal</button></td>';
     cell.classList.add("server-actions");
     servers[servers.length - 1].checkHTML();
     cell = row.insertCell(5);
@@ -267,3 +312,84 @@ window.setInterval(function () {
         }
     }
 }, 1000);
+
+function showTerminal(server) {
+    $("#terminalModal").modal('show');
+    document.getElementById("server_name").value = servers[server].getName() + " #" + (servers[server].getID() + 1);
+    var $ptty = $('#terminal').Ptty({
+        ps: '$>',
+        theme: 'boring',
+        i18n: {
+            welcome: 'Welcome to Ubuntu Focal Fossa (development branch) (GNU/Linux 5.5.2-050502-generic x86_64)<br>' +
+                ' * Documentation:  https://help.ubuntu.com<br>' +
+                ' * Management:     https://landscape.canonical.com<br>' +
+                ' * Support:        https://ubuntu.com/advantage<br>' +
+                'Type <b>help</b> to list the available commands.<br>',
+            error_not_found: 'Befehl nicht gefunden!',
+        }
+    });
+    $ptty.register('command', {
+        name: 'help',
+        method: function (cmd) {
+            var last = $ptty.get_command_option('last');
+            var args = last.split(' ');
+            if (args.length === 2) {
+                switch (args[1]) {
+                    case "rm":
+                        //delete
+                        cmd = "rm <Datei name>: Löscht die angegebene Datei";
+                        break;
+                    case "ls":
+                        //listen
+                        cmd = "ls: Gibt alle Dateien zurück";
+                        break;
+                    case "check":
+                        //listen
+                        cmd = "check <Datei name>: Überprüft die Datei auf Viren";
+                        break;
+                    default:
+                        cmd = "Unbekannter Befehl!";
+                        break;
+                }
+            } else {
+                cmd = "Benutze help [command] um weitere Informationen zu bekommen<br>Verfügbare Befehle: rm, ls, check";
+            }
+            return {out: cmd};
+
+        },
+        help: 'Gibt die Hilfe zurück'
+    });
+    $ptty.register('command', {
+        name: 'ls',
+        method: function (cmd) {
+            cmd = servers[server].getFiles();
+            return {out: cmd};
+
+        },
+        help: 'Gibt die Hilfe zurück'
+    });
+    $ptty.register('command', {
+        name: 'check',
+        method: function (cmd) {
+            var last = $ptty.get_command_option('last');
+            var args = last.split(' ');
+            if (args.length !== 2) {
+                return {out: "Benutzung: check <Datei name>"};
+            }
+
+            servers[server].getRawFiles().forEach(function (file) {
+                if (file.getName() == args[1]) {
+                    if (file.isVirus())
+                        return {out: file.getName() + ": Virus gefunden!"};
+                    return {out: file.getName() + ": Datei ist sicher!"};
+                } else
+                    return {out: "Datei nicht gefunden!"};
+            });
+            return {out: "Keine Dateien auf dem Server"};
+
+        },
+        help: 'Gibt die Hilfe zurück'
+    });
+
+
+}

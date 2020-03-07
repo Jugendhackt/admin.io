@@ -6,18 +6,11 @@ body {
     font-size: .875rem;
 }
 
-.modal-command {
-    background-color: #000000;
-}
+.terminal {
+    color: white;
+    background: #464E51;
+    margin: 10px;
 
-.modal-command-text {
-    color: #ffffff;
-    font-family: monospace;
-}
-
-.modal-command-textbox {
-    color: #000000;
-    font-family: monospace;
 }
 
 .feather {
