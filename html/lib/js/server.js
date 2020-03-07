@@ -4,9 +4,9 @@ const ServerStatus = {
     STOPPED: 0,
     STARTING: 1,
     STARTED: 2,
-    STOPPING: 2,
-    CRASHED: 3,
-    INFESTED: 4
+    STOPPING: 3,
+    CRASHED: 4,
+    INFESTED: 5
 };
 
 class Server {
@@ -140,6 +140,11 @@ class Server {
     }
 
     setInfectionLevel(lvl) {
+        if (lvl === 5) {
+            this.setStatus(ServerStatus.INFESTED);
+            $.growl.warning({message: "Einer deiner Server ist nun infiziert!"});
+        } else
+            this.setStatus(ServerStatus.STARTED);
         this.infected = lvl;
 
     }
@@ -152,6 +157,8 @@ function addServer() {
 }
 
 function addServerWithType(type) {
+    if (servers.length >= 100)
+        return;
     servers[servers.length] = new Server(servers.length, names[type]);
     var row = document.getElementById("dashboard-servers").insertRow(servers.length);
     row.classList.add("single-server");
@@ -208,6 +215,12 @@ function removeMoney(m) {
     return true;
 }
 
+function clearMoney() {
+    money = 0;
+    document.getElementById("money-box").innerText = money;
+    return true;
+}
+
 //init
 addServer();
 
@@ -217,6 +230,9 @@ displayPrice();
 
 
 function buyServer() {
+
+    if (servers.length >= 100)
+        $.growl.warning({message: "Du hast bereits die Maximale Anzahl von Servern"});
     if (removeMoney(price)) {
         $.growl.notice({message: "Ein Server wurde gekauft"});
         addServerWithType(document.getElementById("buy_type").value);
@@ -238,3 +254,16 @@ function displayPrice(){
 window.onbeforeunload = function () {
     return 'Wenn du diese Seite verlässt, ist dein Spielstand verloren!';
 };
+
+
+//generate money
+window.setInterval(function () {
+    for (var i = 0; i < servers.length; i++) {
+        if (servers[i].status === ServerStatus.STARTED)
+            addMoney(1);
+        else if (servers[i].status === ServerStatus.INFESTED) {
+            if (!removeMoney(10))
+                clearMoney();
+        }
+    }
+}, 1000);
