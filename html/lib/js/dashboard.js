@@ -1,3 +1,3 @@
 (function () {
-  feather.replace();
+    feather.replace();
 }());

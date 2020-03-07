@@ -17,6 +17,23 @@ class Server {
         this.name = names[Math.floor(Math.random() * names.length)];
     }
 
+    getStatusString() {
+        switch (this.status) {
+            case ServerStatus.STOPPED:
+                return "Gestoppt";
+            case ServerStatus.STARTING:
+                return "Startet...";
+            case ServerStatus.STARTED:
+                return "Gestartet";
+            case ServerStatus.STOPPING:
+                return "Stoppt...";
+            case ServerStatus.CRASHED:
+                return "Gecrasht";
+            case ServerStatus.INFESTED:
+                return "Infiziert";
+        }
+    }
+
     checkHTML() {
         //dirty way
         var html = "";
@@ -35,28 +52,30 @@ class Server {
 
     setStatus(status) {
         this.status = status;
+        $(this.html).children(".server-status").text(this.getStatusString());
+
     }
 
     shutdown() {
-        this.status = ServerStatus.STOPPING;
+        this.setStatus(ServerStatus.STOPPING);
         $(this.html).children(".server-actions").children(".server-actions-shutdown").prop('disabled', true);
-        $(server.html).children(".server-actions").children(".server-actions-terminal").prop('disabled', true);
+        $(this.html).children(".server-actions").children(".server-actions-terminal").prop('disabled', true);
         var server = this;
 
         setTimeout(function () {
             $(server.html).children(".server-actions").children(".server-actions-start").prop('disabled', false);
-            server.status = ServerStatus.STOPPED;
+            server.setStatus(ServerStatus.STOPPED);
         }, 5000);
     }
 
     start() {
-        this.status = ServerStatus.STARTING;
+        this.setStatus(ServerStatus.STARTING);
         $(this.html).children(".server-actions").children(".server-actions-start").prop('disabled', true);
         var server = this;
         setTimeout(function () {
             $(server.html).children(".server-actions").children(".server-actions-shutdown").prop('disabled', false);
-            $(server.html).children(".server-actions").children(".server-actions-terminal").prop('disabled', true);
-            server.status = ServerStatus.STARTED;
+            $(server.html).children(".server-actions").children(".server-actions-terminal").prop('disabled', false);
+            server.setStatus(ServerStatus.STARTED);
         }, 5000);
     }
 
@@ -65,6 +84,8 @@ class Server {
     }
 
     getPing() {
+        if (this.status === ServerStatus.STOPPED || this.status === ServerStatus.CRASHED || this.status === ServerStatus.STARTING)
+            return "-";
         switch (this.infected) {
             case 0:
             case 1:
@@ -88,6 +109,8 @@ class Server {
     }
 
     getUsage() {
+        if (this.status === ServerStatus.STOPPED || this.status === ServerStatus.CRASHED || this.status === ServerStatus.STARTING)
+            return "-";
         if (this.infected > 0) {
             switch (this.infected) {
                 case 1: {
@@ -142,9 +165,12 @@ function addServer() {
     cell.innerText = servers[servers.length - 1].getPing();
     cell.classList.add("server-ping");
     cell = row.insertCell(4);
-    cell.innerHTML = '<td class="server-actions"><button disabled class="server-button btn-danger btn server-actions-shutdown" onclick="servers[' + (servers.length - 1) + '].shutdown();">Herunterfahren</button><button class="server-button btn-success btn server-actions-start" onclick="servers[' + (servers.length - 1) + '].start();">Starten</button><button class="server-button disabled btn-primary btn server-actions-start">Terminal</button></td>';
+    cell.innerHTML = '<td class="server-actions"><button disabled class="server-button btn-danger btn server-actions-shutdown" onclick="servers[' + (servers.length - 1) + '].shutdown();">Herunterfahren</button><button class="server-button btn-success btn server-actions-start" onclick="servers[' + (servers.length - 1) + '].start();">Starten</button><button class="server-button disabled btn-primary btn server-actions-terminal">Terminal</button></td>';
     cell.classList.add("server-actions");
-    servers[servers.length - 1].checkHTML()
+    servers[servers.length - 1].checkHTML();
+    cell = row.insertCell(5);
+    cell.innerText = servers[servers.length - 1].getStatusString();
+    cell.classList.add("server-status");
 
 }
 
@@ -156,6 +182,24 @@ window.setInterval(function () {
     });
 }, 1000);
 
+
+var money = 0;
+
+function hasMoney(m) {
+    return money >= m;
+}
+
+function addMoney(m) {
+    return money += m;
+}
+
+function removeMoney(m) {
+    if (!hasMoney(m)) {
+        return false;
+    }
+    money = money - m;
+    return true;
+}
 
 //init
 addServer();
