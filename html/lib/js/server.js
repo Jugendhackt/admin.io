@@ -223,3 +223,7 @@ function buyServer() {
     }
     $('#what-server-buy-modal').modal('hide');
 }
+
+window.onbeforeunload = function () {
+    return 'Wenn du diese Seite verlässt, ist dein Spielstand verloren!';
+};
