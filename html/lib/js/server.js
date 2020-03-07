@@ -348,6 +348,10 @@ function showTerminal(server) {
                         //listen
                         cmd = "check <Datei name>: Überprüft die Datei auf Viren";
                         break;
+                    case "help":
+                        //help
+                        cmd = "help: Zeigt diese Hilfe";
+                        break;
                     default:
                         cmd = "Unbekannter Befehl!";
                         break;
