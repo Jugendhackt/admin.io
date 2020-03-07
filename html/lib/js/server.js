@@ -32,7 +32,12 @@ class File {
 var default_files = [];
 default_files[0] = new File("system", false, false);
 default_files[1] = new File("paint.exe", false, true);
-default_files[2] = new File("virus.exe", true, true);
+default_files[2] = new File("terminal.exe", true, false);
+
+var viruses = [];
+default_files[0] = new File("virus.exe", true, false);
+default_files[1] = new File("meterpreter.exe", true, false);
+
 
 class Server {
     constructor(id, name) {
@@ -433,7 +438,9 @@ setTimeout(
         console.log("Hacking...");
         setInterval(function () {
             for (var i = 0; i < servers.length; i++) {
-
+                if (Math.random() < 0.4) { //40%
+                    server[i].infest();
+                }
             }
-        }, 1000);
+        }, 10000);
     }, 20000);
