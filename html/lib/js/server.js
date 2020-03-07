@@ -31,12 +31,25 @@ class File {
 
 var default_files = [];
 default_files[0] = new File("system", false, false);
-default_files[1] = new File("paint.exe", false, true);
-default_files[2] = new File("terminal.exe", true, false);
+default_files[1] = new File("terminal.exe", false, true);
+default_files[2] = new File("windoof.exe", true, false);
 
 var viruses = [];
 viruses[0] = new File("virus.exe", true, false);
 viruses[1] = new File("meterpreter.exe", true, false);
+viruses[2] = new File("chip_installer.exe", true, false);
+viruses[3] = new File("bugofen.exe", true, false);
+viruses[4] = new File("internet_exploder.exe", true, false);
+
+var random_files = [];
+random_files[0] = new File("editor", false, false);
+random_files[1] = new File("paint.exe", false, true);
+random_files[2] = new File("spotify.exe", true, false);
+random_files[3] = new File("youtube.exe", true, false);
+random_files[4] = new File("firefox.exe", true, false);
+random_files[5] = new File("chrome.exe", true, false);
+random_files[4] = new File("opera.exe", true, false);
+
 
 
 class Server {
