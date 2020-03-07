@@ -16,8 +16,8 @@ class File {
         this.deletable = deletable;
     }
 
-    isDeleteable() {
-        return this.deleteable;
+    isDeletable() {
+        return this.deletable;
     }
 
     isVirus() {
@@ -32,25 +32,62 @@ class File {
 var default_files = [];
 default_files[0] = new File("system", false, false);
 default_files[1] = new File("terminal.exe", false, true);
-default_files[2] = new File("windoof.exe", true, false);
+default_files[2] = new File("paint.exe", false, true);
+default_files[3] = new File("windoof.exe", false, false);
+default_files[4] = new File("ntkernel.exe", false, false);
+default_files[5] = new File("explorer.exe", false, false);
+default_files[6] = new File("music.exe", false, true);
+default_files[7] = new File("audio.exe", false, true);
 
 var viruses = [];
-viruses[0] = new File("virus.exe", true, false);
-viruses[1] = new File("meterpreter.exe", true, false);
-viruses[2] = new File("chip_installer.exe", true, false);
-viruses[3] = new File("bugofen.exe", true, false);
-viruses[4] = new File("internet_exploder.exe", true, false);
+viruses[0] = new File("virus.exe", true, true);
+viruses[1] = new File("meterpreter.exe", true, true);
+viruses[2] = new File("chip_installer.exe", true, true);
+viruses[3] = new File("bugofen.exe", true, true);
+viruses[4] = new File("internet_exploder.exe", true, true);
+viruses[5] = new File("feedbackhub.exe", true, true);
+viruses[6] = new File("memz.exe", true, true);
+viruses[7] = new File("wannacry.exe", true, true);
+viruses[8] = new File("petya.exe", true, true);
+viruses[9] = new File("notpetya.exe", true, true);
 
 var random_files = [];
-random_files[0] = new File("editor", false, false);
+random_files[0] = new File("editor", false, true);
 random_files[1] = new File("paint.exe", false, true);
-random_files[2] = new File("spotify.exe", true, false);
-random_files[3] = new File("youtube.exe", true, false);
-random_files[4] = new File("firefox.exe", true, false);
-random_files[5] = new File("chrome.exe", true, false);
-random_files[4] = new File("opera.exe", true, false);
+random_files[2] = new File("spotify.exe", false, true);
+random_files[3] = new File("youtube.exe", false, true);
+random_files[4] = new File("firefox.exe", false, true);
+random_files[5] = new File("chrome.exe", false, true);
+random_files[6] = new File("opera.exe", false, true);
+random_files[7] = new File("notes.exe", false, true);
+random_files[8] = new File("vlc.exe", false, true);
+random_files[9] = new File("iexplorer.exe", false, true);
+random_files[10] = new File("math.exe", false, true);
+random_files[11] = new File("wordpad.exe", false, true);
+random_files[12] = new File("media-player.exe", false, true);
+random_files[13] = new File("printer.exe", false, true);
+random_files[14] = new File("editor.exe", false, true);
+random_files[14] = new File("editor.exe", false, true);
+random_files[15] = new File("notepad++.exe", false, true);
+random_files[16] = new File("csgo.exe", false, true);
+random_files[17] = new File("cmd.exe", false, true);
+random_files[18] = new File("ksysguard.exe", false, true);
+random_files[18] = new File("snipping-tool.exe", false, true);
+random_files[18] = new File("xbox.exe", false, true);
 
 
+function shuffle(arra1) {
+    var ctr = arra1.length, temp, index;
+
+    while (ctr > 0) {
+        index = Math.floor(Math.random() * ctr);
+        ctr--;
+        temp = arra1[ctr];
+        arra1[ctr] = arra1[index];
+        arra1[index] = temp;
+    }
+    return arra1;
+}
 
 class Server {
     constructor(id, name) {
@@ -59,6 +96,9 @@ class Server {
         this.status = ServerStatus.STARTED;
         this.name = name;
         this.files = default_files;
+        for (var i = 0; i < Math.random() * 5; i++) {
+            this.files.push(random_files[Math.round(Math.random() * random_files.length)]);
+        }
     }
 
     getID() {
@@ -204,23 +244,38 @@ class Server {
     }
 
     setInfectionLevel(lvl) {
-        console.log("InfestionLevel changed:" + this.getID() + " => " + lvl);
+        console.log("InfestionLevel changed:" + this.getID() + ": " + this.infected + " => " + lvl);
         if (lvl === 5) {
             this.setStatus(ServerStatus.INFESTED);
             $.growl.warning({message: "Einer deiner Server ist zu 100% infiziert!"});
         } else
             this.setStatus(ServerStatus.STARTED);
 
-        if (lvl !== 0)
-            this.files.push(viruses[Math.round(Math.random() * viruses.length)]);
-        else {
+        if (lvl !== 0) {
+            var virus_loaded = false;
             for (var i = 0; i < this.files.length; i++) {
-                if (this.files[i].isVirus())
-                    this.files.spice(i, 1);
+                if (this.files[i].isVirus()) {
+                    virus_loaded = true;
+                }
+            }
+            if (!virus_loaded) {
+                this.files.push(viruses[Math.round(Math.random() * viruses.length)]);
+                this.files = shuffle(this.files);
+            }
+        } else {
+            for (var i = 0; i < this.files.length; i++) {
+                if (this.files[i].isVirus()) {
+                    this.files.splice(i, 1);
+                    this.files = shuffle(this.files);
+                }
             }
         }
         this.infected = lvl;
 
+    }
+
+    getInfectionLevel() {
+        return this.infected;
     }
 }
 
@@ -346,7 +401,7 @@ window.setInterval(function () {
     }
     if (online === 0) {
         //no servers?
-        removeMoney(15);
+        removeMoney(10);
     }
 }, 1000);
 
@@ -441,9 +496,10 @@ function showTerminal(server) {
             }
 
             for (var i = 0; i < servers[server].getRawFiles().length; i++) {
-                if (servers[server].getRawFiles()[i].getName().toUpperCase() === args[1].toUpperCase()) {
-                    if (servers[server].getRawFiles()[i].deletable) {
+                if (servers[server].files[i].getName().toUpperCase() === args[1].toUpperCase()) {
+                    if (servers[server].files[i].isDeletable()) {
                         servers[server].files.splice(i, 1);
+                        servers[server].setInfectionLevel(0);
                         return {out: args[1] + ": Datei gelöscht!"};
                     }
                     return {out: servers[server].getRawFiles()[i].getName() + ": Diese Datei kann nicht gelöscht werden!"};
@@ -456,26 +512,27 @@ function showTerminal(server) {
     });
 }
 
-setTimeout(
-    function startInfestion() {
-        console.log("Hacking...");
-        setInterval(function () {
-            for (var i = 0; i < servers.length; i++) {
-                if (Math.random() < 0.5 && servers[i].infested < 3) { //lvl unter 3 mit 10% => 0
-                    servers[i].setInfectionLevel(0);
-                } else if (Math.random() < 0.3 && servers[i].infested < 3) {
-                    servers[i].setInfectionLevel(1);
-                } else if (Math.random() < 0.3 && servers[i].infested < 3) {
-                    servers[i].setInfectionLevel(2);
-                } else if (Math.random() < 0.4 && servers[i].infested > 3 && servers[i].infested < 5) {
-                    servers[i].setInfectionLevel(2);
-                } else if (Math.random() < 0.4 && servers[i].infested > 3 && server[i].infested < 5) {
-                    servers[i].setInfectionLevel(3);
-                } else if (Math.random() < 0.4 && servers[i].infested > 3 && servers[i].infested < 5) {
-                    servers[i].setInfectionLevel(4);
-                } else if (Math.random() < 0.4 && servers[i].infested > 3 && servers[i].infested < 5) {
-                    servers[i].setInfectionLevel(5);
-                }
+setTimeout(function () {
+    console.log("Hacking...");
+    setInterval(function () {
+        for (var i = 0; i < servers.length; i++) {
+            console.log("starts");
+            if (servers[i].getInfectionLevel() === 4) {
+                //higher
+                servers[i].setInfectionLevel(5);
+                continue;
             }
-        }, 10000);
-    }, 20000);
+            if (servers[i].getInfectionLevel() === 5) {
+                continue;
+            }
+            //10% chance for infestion
+            if (Math.random() < 0.1) {
+                //higer level
+                servers[i].setInfectionLevel(servers[i].getInfectionLevel() + 1);
+            } else if (Math.random() < 0.1 && servers[i].getInfectionLevel() > 0) {
+                //5% of lowering it
+                servers[i].setInfectionLevel(servers[i].getInfectionLevel() - 1);
+            }
+        }
+    }, 1500);
+}, 10000); //Todo
