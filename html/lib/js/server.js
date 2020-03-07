@@ -40,6 +40,7 @@ class Server {
     shutdown() {
         this.status = ServerStatus.STOPPING;
         $(this.html).children(".server-actions").children(".server-actions-shutdown").prop('disabled', true);
+        $(server.html).children(".server-actions").children(".server-actions-terminal").prop('disabled', true);
         var server = this;
 
         setTimeout(function () {
@@ -54,6 +55,7 @@ class Server {
         var server = this;
         setTimeout(function () {
             $(server.html).children(".server-actions").children(".server-actions-shutdown").prop('disabled', false);
+            $(server.html).children(".server-actions").children(".server-actions-terminal").prop('disabled', true);
             server.status = ServerStatus.STARTED;
         }, 5000);
     }
