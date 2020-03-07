@@ -14,6 +14,7 @@ class Server {
         this.infected = 0;
         this.id = id;
         this.status = ServerStatus.STOPPED;
+        this.name = name;
     }
 
     getStatusString() {
@@ -148,7 +149,7 @@ var servers = [];
 
 
 function addServer(type) {
-    if (type === 'undefined')
+    if (type == null)
         servers[servers.length] = new Server(servers.length, names[Math.floor(Math.random() * names.length)]);
     else
         servers[servers.length] = new Server(servers.length, names[type]);
@@ -194,7 +195,7 @@ function hasMoney(m) {
 
 function addMoney(m) {
     money += m;
-    document.getElementById("money-box").value = money;
+    document.getElementById("money-box").innerText = money;
     return true;
 }
 
@@ -203,7 +204,7 @@ function removeMoney(m) {
         return false;
     }
     money = money - m;
-    document.getElementById("money-box").value = money;
+    document.getElementById("money-box").innerText = money;
     return true;
 }
 
