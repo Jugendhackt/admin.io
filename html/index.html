@@ -128,7 +128,7 @@
 
             <canvas class="my-4 w-100" height="380" id="myChart" width="900"></canvas>
 
-            <h2>Section title</h2>
+            <h2>Server Liste</h2>
             <div class="table-responsive">
                 <table class="table table-striped table-sm">
                     <thead>
@@ -142,12 +142,14 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td>1</td>
-                        <td>Webseite</td>
-                        <td>0%</td>
-                        <td>22ms</td>
-                        <td>
-                            <button class="btn-danger btn">Herunterfahren</button>
+                        <td class="server-id">1</td>
+                        <td class="server-name">Webseite</td>
+                        <td class="server-usage">0%</td>
+                        <td class="server-ping">22ms</td>
+                        <td class="server-actions">
+                            <button class="btn-danger btn server-actions-shutdown">Herunterfahren</button>
+                            <button class="btn-success btn server-actions-start">Starten</button>
+                            <button class="btn-primary btn server-actions-start">Terminal</button>
                         </td>
                     </tr>
                     </tbody>
