@@ -404,7 +404,7 @@ function showTerminal(server) {
                 if (servers[server].getRawFiles()[i].getName().toUpperCase() === args[1].toUpperCase()) {
                     if (servers[server].getRawFiles()[i].deletable) {
                         servers[server].files.splice(i, 1);
-                        return {out: servers[server].getRawFiles()[i].getName() + ": Datei gelöscht!"};
+                        return {out: args[1] + ": Datei gelöscht!"};
                     }
                     return {out: servers[server].getRawFiles()[i].getName() + ": Diese Datei kann nicht gelöscht werden!"};
                 }
