@@ -309,7 +309,7 @@ window.setInterval(function () {
     var online = 0;
     for (var i = 0; i < servers.length; i++) {
         if (servers[i].status === ServerStatus.STARTED) {
-            addMoney(1);
+            addMoney(2);
             online++;
         } else if (servers[i].status === ServerStatus.INFESTED) {
             if (!removeMoney(5))
