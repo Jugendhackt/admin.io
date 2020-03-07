@@ -1,4 +1,4 @@
-var names = ["Webseite", "E-Mail", "Terminal", "Daten", "Cloud", "Internet", "Gameserver", "Kundendaten", "Telefonserver", "Backups"];
+var names = ["Webseite", "Terminal", "Daten", "Cloud", "Internet", "Gameserver", "Kundendaten", "Telefonserver", "Backups", "E-Mail"];
 
 const ServerStatus = {
     STOPPED: 0,
