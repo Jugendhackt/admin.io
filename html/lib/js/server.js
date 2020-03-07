@@ -38,7 +38,7 @@ class Server {
     constructor(id, name) {
         this.infected = 0;
         this.id = id;
-        this.status = ServerStatus.STOPPED;
+        this.status = ServerStatus.STARTED;
         this.name = name;
         this.files = default_files;
     }
@@ -222,7 +222,7 @@ function addServerWithType(type) {
     cell.innerText = servers[servers.length - 1].getPing();
     cell.classList.add("server-ping");
     cell = row.insertCell(4);
-    cell.innerHTML = '<td class="server-actions"><button disabled class="server-button btn-danger btn server-actions-shutdown" onclick="servers[' + (servers.length - 1) + '].shutdown();">Herunterfahren</button><button class="server-button btn-success btn server-actions-start" onclick="servers[' + (servers.length - 1) + '].start();">Starten</button><button disabled onclick="showTerminal(' + (servers.length - 1) + ');" class="server-button btn-primary btn server-actions-terminal">Terminal</button></td>';
+    cell.innerHTML = '<td class="server-actions"><button class="server-button btn-danger btn server-actions-shutdown" onclick="servers[' + (servers.length - 1) + '].shutdown();">Herunterfahren</button><button disabled class="server-button btn-success btn server-actions-start" onclick="servers[' + (servers.length - 1) + '].start();">Starten</button><button onclick="showTerminal(' + (servers.length - 1) + ');" class="server-button btn-primary btn server-actions-terminal">Terminal</button></td>';
     cell.classList.add("server-actions");
     servers[servers.length - 1].checkHTML();
     cell = row.insertCell(5);
