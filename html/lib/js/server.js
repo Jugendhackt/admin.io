@@ -323,32 +323,32 @@ window.setInterval(function () {
 }, 1000);
 
 
-var money = 200;
+var users = 200;
 
 //now users
-function hasMoney(m) {
-    return money >= m;
+function hasUsers(u) {
+    return users >= u;
 }
 
-function addMoney(m) {
-    money += m;
-    document.getElementById("money-box").innerText = money;
+function addUsers(u) {
+    users += u;
+    document.getElementById("user-box").innerText = users;
     return true;
 }
 
-function removeMoney(m) {
-    if (!hasMoney(m)) {
-        clearMoney();
+function removeUsers(u) {
+    if (!hasUsers(u)) {
+        clearUsers();
         return false;
     }
-    money -= money;
+    users -= u;
 
     return true;
 }
 
-function clearMoney() {
-    money = 0;
-    document.getElementById("money-box").innerText = money;
+function clearUsers() {
+    users = 0;
+    document.getElementById("user-box").innerText = users;
     return true;
 }
 
@@ -364,7 +364,7 @@ function buyServer() {
 
     if (servers.length >= 100)
         $.growl.warning({message: "Du hast bereits die Maximale Anzahl von Servern"});
-    if (hasMoney(price)) {
+    if (hasUsers(price)) {
         $.growl.notice({message: "Ein Server wurde gekauft"});
         addServerWithType(document.getElementById("buy_type").value);
         price *= 2;
@@ -392,16 +392,16 @@ window.setInterval(function () {
     var online = 0;
     for (var i = 0; i < servers.length; i++) {
         if (servers[i].status === ServerStatus.STARTED) {
-            addMoney(2);
+            addUsers(2);
             online++;
         } else if (servers[i].status === ServerStatus.INFESTED) {
-            if (!removeMoney(5))
-                clearMoney();
+            if (!removeUsers(5))
+                clearUsers();
         }
     }
     if (online === 0) {
         //no servers?
-        removeMoney(10);
+        removeUsers(10);
     }
 }, 1000);
 
