@@ -213,7 +213,8 @@ addServer();
 
 
 function buyServer() {
-    if (removeMoney(100)) {
+    var price = 1000;
+    if (removeMoney(price)) {
         $.growl.notice({message: "Ein Server wurde gekauft"});
         addServerWithType(document.getElementById("buy_type").value);
         //buy
