@@ -10,11 +10,10 @@ const ServerStatus = {
 };
 
 class Server {
-    constructor(id) {
+    constructor(id, name) {
         this.infected = 0;
         this.id = id;
         this.status = ServerStatus.STOPPED;
-        this.name = names[Math.floor(Math.random() * names.length)];
     }
 
     getStatusString() {
@@ -147,8 +146,12 @@ class Server {
 
 var servers = [];
 
-function addServer() {
-    servers[servers.length] = new Server(servers.length);
+
+function addServer(type) {
+    if (type === 'undefined')
+        servers[servers.length] = new Server(servers.length, names[Math.floor(Math.random() * names.length)]);
+    else
+        servers[servers.length] = new Server(servers.length, names[type]);
     var row = document.getElementById("dashboard-servers").insertRow(servers.length);
     row.classList.add("single-server");
     var cell = row.insertCell(0);
@@ -190,7 +193,9 @@ function hasMoney(m) {
 }
 
 function addMoney(m) {
-    return money += m;
+    money += m;
+    document.getElementById("money-box").value = money;
+    return true;
 }
 
 function removeMoney(m) {
@@ -198,8 +203,22 @@ function removeMoney(m) {
         return false;
     }
     money = money - m;
+    document.getElementById("money-box").value = money;
     return true;
 }
 
 //init
 addServer();
+
+
+function buyServer() {
+    if (removeMoney(100)) {
+        $.growl.notice({message: "Ein Server wurde gekauft"});
+        addServer();
+        //buy
+    } else {
+        //no money
+        $.growl.error({message: "Du hast nicht genug Geld!"});
+    }
+    $('#what-server-buy-modal').modal('hide');
+}

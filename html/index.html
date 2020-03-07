@@ -11,6 +11,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="lib/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/css/jquery.growl.css" rel="stylesheet">
 
     <meta content="#563d7c" name="theme-color">
 
@@ -116,35 +117,39 @@
         <div aria-hidden="true" aria-labelledby="modal-buy" class="modal fade" id="what-server-buy-modal" role="dialog"
              tabindex="-1">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modal-buy">Welchen Server kaufen?</h5>
-                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
+                <form action="#" onsubmit="buyServer()">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-buy">Welchen Server kaufen?</h5>
+                            <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         <div class="modal-body">
-                            <div class="dropdown">
-                                <select class="form-control" id="exampleFormControlSelect1">
-                                    <option>Website</option>
-                                    <option>Terminal</option>
-                                    <option>Daten</option>
-                                    <option>Cloud</option>
-                                    <option>Internet</option>
-                                    <option>Gameserver</option>
-                                    <option>Kundenserver</option>
-                                    <option>Telefonserver</option>
-                                    <option>Backups</option>
-                                </select>
+                            <div class="modal-body">
+                                <div class="dropdown">
+                                    <select class="form-control" id="buy_type" id="exampleFormControlSelect1">
+                                        <option>Website</option>
+                                        <option>Terminal</option>
+                                        <option>Daten</option>
+                                        <option>Cloud</option>
+                                        <option>Internet</option>
+                                        <option>Gameserver</option>
+                                        <option>Kundenserver</option>
+                                        <option>Telefonserver</option>
+                                        <option>Backups</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal" type="button">Schließen</button>
+                            <button class="btn btn-primary" type="submit">
+                                Kaufen
+                            </button>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-dismiss="modal" type="button">Schließen</button>
-                        <button class="btn btn-primary" data-dismiss="modal" type="button">Kaufen</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
 
@@ -182,6 +187,7 @@
     </div>
 </div>
 <script src="lib/js/jquery-3.4.1.slim.min.js"></script>
+<script src="lib/js/jquery.growl.js"></script>
 <script src="lib/js/feather.min.js"></script>
 <script src="lib/js/popper.min.js"></script>
 <script src="lib/js/bootstrap.min.js"></script>
