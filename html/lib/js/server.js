@@ -1,9 +1,61 @@
 var names = ["Webseite", "Terminal", "Daten", "Cloud", "Internet", "Gameserver", "Kundendaten", "Telefonserver", "Backups"];
 
+const ServerStatus = {
+    STOPPED: 0,
+    STARTING: 1,
+    STARTED: 2,
+    STOPPING: 2,
+    CRASHED: 3,
+    INFESTED: 4
+};
+
 class Server {
     constructor(id) {
         this.infected = 0;
+        this.id = id;
+        this.status = ServerStatus.STOPPED;
         this.name = names[Math.floor(Math.random() * names.length)];
+    }
+
+    checkHTML() {
+        //dirty way
+        var html = "";
+        var id = this.id;
+        $(".single-server").each(function (index) {
+            if (index === id) {
+                html = this;
+            }
+        });
+        this.html = html;
+    }
+
+    getStatus() {
+        return this.status;
+    }
+
+    setStatus(status) {
+        this.status = status;
+    }
+
+    shutdown() {
+        this.status = ServerStatus.STOPPING;
+        $(this.html).children(".server-actions").children(".server-actions-shutdown").prop('disabled', true);
+        var server = this;
+
+        setTimeout(function () {
+            $(server.html).children(".server-actions").children(".server-actions-start").prop('disabled', false);
+            server.status = ServerStatus.STOPPED;
+        }, 5000);
+    }
+
+    start() {
+        this.status = ServerStatus.STARTING;
+        $(this.html).children(".server-actions").children(".server-actions-start").prop('disabled', true);
+        var server = this;
+        setTimeout(function () {
+            $(server.html).children(".server-actions").children(".server-actions-shutdown").prop('disabled', false);
+            server.status = ServerStatus.STARTED;
+        }, 5000);
     }
 
     getName() {
@@ -88,8 +140,9 @@ function addServer() {
     cell.innerText = servers[servers.length - 1].getPing();
     cell.classList.add("server-ping");
     cell = row.insertCell(4);
-    cell.innerHTML = '<td class="server-actions"><button class="server-button btn-danger btn server-actions-shutdown" onclick="this.disabled = true;">Herunterfahren</button><button disabled class="server-button btn-success disabled btn server-actions-start">Starten</button><button class="server-button btn-primary btn server-actions-start">Terminal</button></td>';
+    cell.innerHTML = '<td class="server-actions"><button disabled class="server-button btn-danger btn server-actions-shutdown" onclick="servers[' + (servers.length - 1) + '].shutdown();">Herunterfahren</button><button class="server-button btn-success btn server-actions-start" onclick="servers[' + (servers.length - 1) + '].start();">Starten</button><button class="server-button disabled btn-primary btn server-actions-start">Terminal</button></td>';
     cell.classList.add("server-actions");
+    servers[servers.length - 1].checkHTML()
 
 }
 
