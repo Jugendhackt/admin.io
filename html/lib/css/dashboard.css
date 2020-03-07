@@ -11,6 +11,10 @@ body {
   font-family: monospace;
 }
 
+.modal-command-textbox {
+  color: #000000;
+  font-family: monospace;
+
 .feather {
   width: 16px;
   height: 16px;
