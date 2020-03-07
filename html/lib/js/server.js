@@ -32,6 +32,7 @@ class File {
 var default_files = [];
 default_files[0] = new File("system", false, false);
 default_files[1] = new File("paint.exe", false, true);
+default_files[2] = new File("virus.exe", true, true);
 
 class Server {
     constructor(id, name) {
@@ -291,7 +292,7 @@ function buyServer() {
     $('#what-server-buy-modal').modal('hide');
 }
 
-function displayPrice(){
+function displayPrice() {
     var priceSpan = document.getElementById("price");
     priceSpan.innerText = price;
 }
@@ -377,15 +378,14 @@ function showTerminal(server) {
                 return {out: "Benutzung: check <Datei name>"};
             }
 
-            servers[server].getRawFiles().forEach(function (file) {
-                if (file.getName() == args[1]) {
-                    if (file.isVirus())
-                        return {out: file.getName() + ": Virus gefunden!"};
-                    return {out: file.getName() + ": Datei ist sicher!"};
-                } else
-                    return {out: "Datei nicht gefunden!"};
-            });
-            return {out: "Keine Dateien auf dem Server"};
+            for (var i = 0; i < servers[server].getRawFiles().length; i++) {
+                if (servers[server].getRawFiles()[i].getName().toUpperCase() === args[1].toUpperCase()) {
+                    if (servers[server].getRawFiles()[i].isVirus())
+                        return {out: servers[server].getRawFiles()[i].getName() + ": Virus gefunden!"};
+                    return {out: servers[server].getRawFiles()[i].getName() + ": Datei ist sicher!"};
+                }
+            }
+            return {out: "Datei nicht gefunden!"};
 
         },
         help: 'Gibt die Hilfe zurück'
