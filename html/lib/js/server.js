@@ -240,7 +240,7 @@ window.setInterval(function () {
 }, 1000);
 
 
-var money = 0;
+var money = 200;
 
 //now users
 function hasMoney(m) {
@@ -269,7 +269,7 @@ function clearMoney() {
 //init
 addServer();
 
-var price = 1000;
+var price = 300;
 
 displayPrice();
 
