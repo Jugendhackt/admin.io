@@ -211,18 +211,28 @@ function removeMoney(m) {
 //init
 addServer();
 
+var price = 1000;
+
+displayPrice();
+
 
 function buyServer() {
-    var price = 1000;
     if (removeMoney(price)) {
         $.growl.notice({message: "Ein Server wurde gekauft"});
         addServerWithType(document.getElementById("buy_type").value);
+        price *= 3;
+        displayPrice();
         //buy
     } else {
         //no money
         $.growl.error({message: "Du hast nicht genug Geld!"});
     }
     $('#what-server-buy-modal').modal('hide');
+}
+
+function displayPrice(){
+    var priceSpan = document.getElementById("price");
+    priceSpan.innerText = price;
 }
 
 window.onbeforeunload = function () {
