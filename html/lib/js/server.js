@@ -244,7 +244,7 @@ class Server {
     }
 
     setInfectionLevel(lvl) {
-        console.log("InfestionLevel changed:" + this.getID() + ": " + this.infected + " => " + lvl);
+        console.log("InfectionLevel changed:" + this.getID() + ": " + this.infected + " => " + lvl);
         if (lvl === 5) {
             this.setStatus(ServerStatus.INFESTED);
             $.growl.warning({message: "Einer deiner Server ist zu 100% infiziert!"});
@@ -516,7 +516,6 @@ setTimeout(function () {
     console.log("Hacking...");
     setInterval(function () {
         for (var i = 0; i < servers.length; i++) {
-            console.log("starts");
             if (servers[i].getInfectionLevel() === 4) {
                 //higher
                 servers[i].setInfectionLevel(5);
@@ -525,7 +524,7 @@ setTimeout(function () {
             if (servers[i].getInfectionLevel() === 5) {
                 continue;
             }
-            //10% chance for infestion
+            //10% chance for infection
             if (Math.random() < 0.1) {
                 //higer level
                 servers[i].setInfectionLevel(servers[i].getInfectionLevel() + 1);
@@ -535,4 +534,4 @@ setTimeout(function () {
             }
         }
     }, 1500);
-}, 10000); //Todo
+}, 10000);
