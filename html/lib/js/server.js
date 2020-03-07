@@ -1,4 +1,4 @@
-var names = ["Webseite", "Terminal", "Daten", "Cloud", "Internet", "Gameserver", "Kundendaten", "Telefonserver", "Backups"];
+var names = ["Webseite", "E-Mail", "Terminal", "Daten", "Cloud", "Internet", "Gameserver", "Kundendaten", "Telefonserver", "Backups"];
 
 const ServerStatus = {
     STOPPED: 0,
@@ -242,6 +242,7 @@ window.setInterval(function () {
 
 var money = 0;
 
+//now users
 function hasMoney(m) {
     return money >= m;
 }
@@ -256,8 +257,6 @@ function removeMoney(m) {
     if (!hasMoney(m)) {
         return false;
     }
-    money = money - m;
-    document.getElementById("money-box").innerText = money;
     return true;
 }
 
@@ -287,7 +286,7 @@ function buyServer() {
         //buy
     } else {
         //no money
-        $.growl.error({message: "Du hast nicht genug Geld!"});
+        $.growl.error({message: "Zu viele Server sind zu teuer. Du brauchst mehr Benutzer!"});
     }
     $('#what-server-buy-modal').modal('hide');
 }
@@ -418,6 +417,13 @@ function showTerminal(server) {
         },
         help: 'Gibt die Hilfe zurück'
     });
-
-
 }
+
+setTimeout(
+    function startInfestion() {
+        setInterval(function () {
+            for (var i = 0; i < servers.length; i++) {
+
+            }
+        }, 1000);
+    }, 20000);
