@@ -2,6 +2,15 @@ body {
   font-size: .875rem;
 }
 
+.modal-command {
+  background-color: #000000;
+}
+
+.modal-command-text {
+  color: #ffffff;
+  font-family: monospace;
+}
+
 .feather {
   width: 16px;
   height: 16px;

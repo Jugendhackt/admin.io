@@ -45,12 +45,13 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="#">
                             <span data-feather="home"></span>
-                            Dashboard <span class="sr-only">(current)</span>
+                            Server <span class="sr-only">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file"></span>
+                        <a class="nav-link" data-target="#exampleModal" data-toggle="modal"
+                           data-whatever="@getbootstrap" href="#">
+                            <span data-feather="shopping-cart"></span>
                             Command Line
                         </a>
                     </li>
@@ -119,6 +120,38 @@
                 </table>
             </div>
         </main>
+
+        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade modal-command" id="exampleModal"
+             role="dialog" tabindex="-1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content modal-command">
+                    <div class="modal-header">
+                        <h5 class="modal-title modal-command-text" id="exampleModalLabel">>-- Command Line</h5>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label class="col-form-label modal-command-text" for="recipient-name">Server:</label>
+                                <input class="form-control" id="recipient-name" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label modal-command-text" for="message-text">Command:</label>
+                                <textarea class="form-control" id="message-text"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary modal-command-text" data-dismiss="modal" type="button">Close
+                            cmd
+                        </button>
+                        <button class="btn btn-primary modal-command-text" type="button">Send command</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script crossorigin="anonymous"
