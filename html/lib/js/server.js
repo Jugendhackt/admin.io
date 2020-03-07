@@ -35,8 +35,8 @@ default_files[1] = new File("paint.exe", false, true);
 default_files[2] = new File("terminal.exe", true, false);
 
 var viruses = [];
-default_files[0] = new File("virus.exe", true, false);
-default_files[1] = new File("meterpreter.exe", true, false);
+viruses[0] = new File("virus.exe", true, false);
+viruses[1] = new File("meterpreter.exe", true, false);
 
 
 class Server {
