@@ -7,17 +7,18 @@ body {
 }
 
 .modal-command {
-  background-color: #000000;
+    background-color: #000000;
 }
 
 .modal-command-text {
-  color: #ffffff;
-  font-family: monospace;
+    color: #ffffff;
+    font-family: monospace;
 }
 
 .modal-command-textbox {
-  color: #000000;
-  font-family: monospace;
+    color: #000000;
+    font-family: monospace;
+}
 
 .feather {
     width: 16px;
