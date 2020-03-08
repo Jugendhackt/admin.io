@@ -431,7 +431,9 @@ var money_interval = window.setInterval(function () {
 
         $.growl.error({message: "Du hast keine Kunden mehr!<br>Game Over"});
         window.clearInterval(money_interval);
-        $('#game-over').modal('show')
+        $('#game-over').modal('show');
+        $('#what-server-buy-modal').modal('hide');
+        $('#terminalModal').modal('hide');
 
 
     }
