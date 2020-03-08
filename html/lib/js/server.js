@@ -50,6 +50,13 @@ viruses[6] = new File("memz.exe", true, true);
 viruses[7] = new File("wannacry.exe", true, true);
 viruses[8] = new File("petya.exe", true, true);
 viruses[9] = new File("notpetya.exe", true, true);
+viruses[10] = new File("membership.exe", true, true);
+viruses[11] = new File("goodasnew.exe", true, true);
+viruses[12] = new File("computerrona.exe", true, true);
+viruses[13] = new File("infinity.exe", true, true);
+viruses[14] = new File("exe.exe", true, true);
+viruses[15] = new File("wlanpassword.bat", true, true);
+
 
 var random_files = [];
 random_files[0] = new File("editor", false, true);
@@ -67,13 +74,27 @@ random_files[11] = new File("wordpad.exe", false, true);
 random_files[12] = new File("media-player.exe", false, true);
 random_files[13] = new File("printer.exe", false, true);
 random_files[14] = new File("editor.exe", false, true);
-random_files[14] = new File("editor.exe", false, true);
 random_files[15] = new File("notepad++.exe", false, true);
 random_files[16] = new File("csgo.exe", false, true);
 random_files[17] = new File("cmd.exe", false, true);
 random_files[18] = new File("ksysguard.exe", false, true);
-random_files[18] = new File("snipping-tool.exe", false, true);
-random_files[18] = new File("xbox.exe", false, true);
+random_files[19] = new File("snipping-tool.exe", false, true);
+random_files[20] = new File("xbox.exe", false, true);
+random_files[21] = new File("memehub.exe", false, true);
+random_files[22] = new File("steam.exe", false, true);
+random_files[23] = new File("minecraftserver.jar", false, true);
+random_files[24] = new File("minecrat.exe", false, true);
+random_files[25] = new File("admin.io", false, true);
+random_files[26] = new File("jugenthackt.exe", false, false);
+random_files[27] = new File("powerpoint.exe", false, true);
+random_files[28] = new File("word.exe", false, true);
+random_files[29] = new File("excel.exe", false, true);
+random_files[30] = new File("onenote.exe", false, true);
+
+
+
+
+
 
 
 function shuffle(arra1) {
