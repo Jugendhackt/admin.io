@@ -383,8 +383,11 @@ function buyServer() {
         $.growl.notice({message: "Herzlichen Glückwunsch!<br>Du hast 10 Server!<brGewonnen!>"});
     }
 
-    if (servers.length >= 100)
+    if (servers.length >= 100) {
         $.growl.warning({message: "Du hast bereits die Maximale Anzahl von Servern"});
+        $('#what-server-buy-modal').modal('hide');
+        return false;
+    }
     if (hasUsers(price)) {
         $.growl.notice({message: "Ein Server wurde gekauft"});
         addServerWithType(document.getElementById("buy_type").value);
