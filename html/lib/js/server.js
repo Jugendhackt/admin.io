@@ -92,11 +92,6 @@ random_files[29] = new File("excel.exe", false, true);
 random_files[30] = new File("onenote.exe", false, true);
 
 
-
-
-
-
-
 function shuffle(arra1) {
     var ctr = arra1.length, temp, index;
 
@@ -384,6 +379,9 @@ displayPrice();
 
 
 function buyServer() {
+    if (servers.length === 9) {
+        $.growl.notice({message: "Herzlichen Glückwunsch!<br>Du hast 10 Server!<brGewonnen!>"});
+    }
 
     if (servers.length >= 100)
         $.growl.warning({message: "Du hast bereits die Maximale Anzahl von Servern"});
