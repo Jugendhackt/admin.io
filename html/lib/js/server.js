@@ -108,7 +108,8 @@ class Server {
     getFiles() {
         var ret = "";
         this.files.forEach(function (file) {
-            ret += file.getName() + ",";
+            if (file != "undefined")
+                ret += file.getName() + ",";
         });
         return ret;
     }
@@ -253,8 +254,8 @@ class Server {
 
         if (lvl !== 0) {
             var virus_loaded = false;
-            for (var i = 0; i < this.files.length; i++) {
-                if (this.files[i].isVirus()) {
+            for (var ii = 0; ii < this.files.length; ii++) {
+                if (this.files[ii].isVirus()) {
                     virus_loaded = true;
                 }
             }
@@ -263,9 +264,9 @@ class Server {
                 this.files = shuffle(this.files);
             }
         } else {
-            for (var i = 0; i < this.files.length; i++) {
-                if (this.files[i].isVirus()) {
-                    this.files.splice(i, 1);
+            for (var i2 = 0; i2 < this.files.length; i2++) {
+                if (this.files[i2].isVirus()) {
+                    this.files.splice(i2, 1);
                     this.files = shuffle(this.files);
                 }
             }
@@ -342,6 +343,7 @@ function removeUsers(u) {
         return false;
     }
     users -= u;
+    document.getElementById("user-box").innerText = users;
 
     return true;
 }
@@ -388,7 +390,7 @@ window.onbeforeunload = function () {
 
 
 //generate money
-window.setInterval(function () {
+var money_interval = window.setInterval(function () {
     var online = 0;
     for (var i = 0; i < servers.length; i++) {
         if (servers[i].status === ServerStatus.STARTED) {
@@ -402,6 +404,15 @@ window.setInterval(function () {
     if (online === 0) {
         //no servers?
         removeUsers(10);
+    }
+    if (users === 0) {
+        //game over
+
+        $.growl.error({message: "Du hast keine Kunden mehr!<br>Game Over"});
+        window.clearInterval(money_interval);
+        $('#game-over').modal('show')
+
+
     }
 }, 1000);
 
@@ -500,6 +511,7 @@ function showTerminal(server) {
                     if (servers[server].files[i].isDeletable()) {
                         servers[server].files.splice(i, 1);
                         servers[server].setInfectionLevel(0);
+                        removeUsers(1);
                         return {out: args[1] + ": Datei gelöscht!"};
                     }
                     return {out: servers[server].getRawFiles()[i].getName() + ": Diese Datei kann nicht gelöscht werden!"};
@@ -525,7 +537,7 @@ setTimeout(function () {
                 continue;
             }
             //10% chance for infection
-            if (Math.random() < 0.1) {
+            if (Math.random() < 0.2) {
                 //higer level
                 servers[i].setInfectionLevel(servers[i].getInfectionLevel() + 1);
             } else if (Math.random() < 0.1 && servers[i].getInfectionLevel() > 0) {
@@ -535,3 +547,5 @@ setTimeout(function () {
         }
     }, 1500);
 }, 10000);
+
+
